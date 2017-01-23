@@ -1,0 +1,317 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf760
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 LucidaGrande;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\vieww12000\viewh15840\viewkind0
+\deftab720
+\pard\pardeftab720\sl276\slmult1\partightenfactor0
+
+\f0\b\fs22 \cf0 Intro\
+
+\b0 - tervetuloa t\'e4m\'e4n vuoden kolmanteen Sysart Hotspot-tapahtumaan.\
+- n\'e4ill\'e4 tapahtumilla haetaan lis\'e4\'e4 keskustelua mielenkiintoisten aiheiden ymp\'e4rill\'e4.\
+- Agenda: React - A Javascript library for building user interfaces\
+    history, where it came from. The problems it tries to solve\
+    how it works, how it is used\
+    pros & cons, experiences\
+    some code\
+\
+
+\b  Who am I / who are you?\
+
+\b0 - MO from Sysart Oy\
+- full stack k\'e4det savessa ArchiDev & coach\
+- thinking back I realized that I've built UI:s with a lot of different libraries & frameworks.\
+- first web app when browser was called Mosaic and server was NCSA ~1994\
+- who are you? Web devs? Using some web framework, which one? React?\
+\
+
+\b xxxx - xxx censored xxx system\
+
+\b0 - is it useful to talk about "web apps" anymore?\
+- these days we demand the same interactivity and richness from applications running\
+  on the browser as native applications. The browser is just another UI platform.\
+- here is an application I was building around 2010 \
+- it replaced a paper-based xxxx.\
+  xxxxx had to manually copy readings from the device screens\
+- near realtime data flows into the system from many sources:\
+    automatic measurements from xxx, xxx, etc.\
+    xxx data, xxx, etc. from other systems\
+    user input\
+    other users input (they may edit the same xxx report simultaneously)\
+- so, applications are complex and dynamic. \
+  We need good UI libraries to make developing them simpler\
+\
+
+\b So Hot (slideshow)\
+
+\b0 - we do have UI libraries and frameworks for web dev! Lot's of them!\
+- Why did Facebook devs feel they need another one?\
+\
+
+\b History of React\
+
+\b0 - Created @ Facebook.\
+- draws inspiration from XHP from the PHP world. \
+- 1st deployed 2011 FB newsfeed\
+- Open Sourced 2013 (3-clause BSD with Facebook addendum)\
+- rise to popularity\
+- OK, but why did Facebook devs feel they need another UI library?\
+\
+
+\b The problem: building large apps with data that changes over time\
+
+\b0 - history: browsers 
+\b evolved 
+\b0 into a rich UI platform. \
+  Not really designed as such from the start --> DOM is not the perfect abstraction\
+- modifying the DOM in a performant way is difficult.\
+  "layout thrashing". Reflow, repaint. The DOM is slow.\
+  Even reading a value from the DOM may cause synchronous reflow (innerHeight)\
+- two-way databinding is complex\
+- React takes a different route...\
+\
+
+\b Modifying the DOM\
+
+\b0 - how do you deal with changes like: an attribute changes value here,\
+  a node should be added between these?\
+- render creates a DOM representation. A "spec" of the UI. Malli/speksi.\
+  Manipulating data with JS is fast.\
+\
+
+\b Virtual DOM\
+
+\b0 - Reacts DOM spec/model is called Virtual DOM. \
+- the virtual DOM can be compared to the one from the previous render. "reconcile"\
+  React computes the difference between the old vdom and the new vdom. A DIFF.\
+	Thinks about it.\
+	Then applies the necessary changes to the browser DOM.\
+  Optimized with deep DOM knowledge. Us devs do not have to dig so deep.\
+- updates: no explicit data binding.\
+  Conceptually: when something changes blow the UI away and render it again.\
+  Initial render is exactly the same as any later update render.\
+\
+
+\b UI components\
+
+\b0 - a React application is built with components.\
+- Repetitive constructs can be refactored into components\
+- components have a declarative API.\
+- hierarchy render -> render, render, render\
+\
+
+\b JSX
+\b0 \
+    mixing tags with the code? Isn't that bad?\
+    back when "Active Server Pages" (ASP) ... server templates\
+    people got into trouble by adding logic (sometimes even business logic) into templates.\
+    --> rule: 'thou shalt not put logic into templates'\
+\
+    Then we divided our stuff into separate folders because "separation of concerns".\
+    models/views/controllers/JS/templates/...\
+    Now you have to touch all those folders when changing a single logical thing.\
+\
+    A React component puts all the parts of the component together in the same place.\
+    Cohesion. Things that depend on each other. Things that change together.\
+    You can even have your styles in your component - if you want to. \
+    Or just the parts of the CSS that are integral to the working of it.\
+\
+    JSX is not a template mechanism. It's Javascript code.\
+    But, nothing prevents you from leaking business logic into a React component. Don't. \
+\
+
+\b One-way dataflow (drawing)\
+
+\b0 - a component takes properties. This is a declarative API.\
+- the component renders itself based on the data it receives via properties\
+- a component cannot change its props. Props are immutable.\
+- data flows down the hierarchy via props\
+- parents instantiate children giving them properties.\
+- the parent can have logic and calculations and decide what props values to give to its children.\
+\
+
+\b One-way dataflow (code)\
+
+\b0 - A component can be just a function!\
+- Transforms props into a virtual dom. Very much FP in spirit.\
+- This is the render() function and it's all you need for stateless components.\
+- API getDefaultProps - values for props not given\
+- API propTypes - validate incoming properties (dev time)\
+\
+
+\b Synthetic Events
+\b0 \
+- event handler functions will be passed instances of SyntheticEvent, a cross-browser wrapper around the browser's native event. The events work identically across all browsers.\
+- It has the same interface as the browser's native event, including stopPropagation() and preventDefault().\
+- Event delegation: add a single event handler to a parent element in order to avoid having to add event handlers to multiple child elements.\
+\
+
+\b UI component state (code)\
+
+\b0 - sometimes UI components need internal state. Image slideshow knows which image it is showing. Nobody else cares!\
+- props can never be changed by the component itself (data flows down)\
+- state is private to the component and it can change it\
+- when state is changed you call setState() and React knows the components needs to be rendered.\
+- API: getInitialState\
+\
+
+\b UI component state (drawing)\
+
+\b0 - another example of UI component state. A table component might want to know which column to sort by.\
+- the event handling function does not have to be in the column component that gets clicked. Column may get onClick-callback via props. Props may be functions!\
+- onColumnHeaderClick in the table component can set the state.\
+- prefer stateless components\
+\
+
+\b Component lifecycle callbacks\
+
+\b0 - escape hatches, hooks. Provides access to the real rendered DOM.\
+- Timers can be started at didMount and cleared at willUnmount (slideshow example).\
+- one notable thing here: shouldComponentUpdate can be used to further optimize rendering. If you can cheaply detect that your props and state have not changed, React can use the old virtual DOM for this component and the entire subtree beneath it!\
+- Check out Om - the "ClojureScript interface to React". It uses immutable data structures so dirty checking is just a this.props !== nextProps. No need for deep equals!\
+- So... that's it for most of the API\
+\
+
+\b Not just divs and spans...
+\b0  
+\b  (SVG example)
+\b0 \
+- SVG is also part of the DOM. Scalable Vector Graphics\
+\
+
+\b Gut feeling ... (my experiences)\
+
+\b0 - I like it. Making components and composing them is easy.\
+- Components are just Javascript code so we have all the expressive power of a general purpose programming language to work with.\
+- developer experience is nice: Excellent error messages.\
+\
+
+\b Experiences at Sysart\
+
+\b0 xxxx team has used React for 1 year now.\
+- fun!\
+- oppimiskynnys React-malliin --> sitten uuden tekeminen helppoa\
+- Pit\'e4\'e4 mietti\'e4 hyvin, dataflow malli, staten k\'e4ytt\'f6 --> kun ne saa kohdilleen niin homma toimii. Controller components.\
+- maailma muuttuu, React kehittyy/el\'e4\'e4 viel\'e4, pient\'e4 muutosta jatkuvasti\
+- Good supply of third party components, here are some we are using.\
+- Angular vs. React --> makukysymys. 1v j\'e4lkeen ei vaihtaisi takaisin.\
+\
+
+\b Pros\
+
+\b0   {\field{\*\fldinst{HYPERLINK "http://techblog.netflix.com/2015/01/netflix-likes-react.html"}}{\fldrslt http://techblog.netflix.com/2015/01/netflix-likes-react.html}}\
+- Well, it's pretty clear what is important to Netflix. Speed. Performance.\
+- popular, large ecosystem. Will not disappear overnight :-)\
+  - can render on the server. attach event handers on the client.\
+  initial render or 'static' pages.\
+  Netflix is doing both server side and client side rendering, startup speed.\
+  "Isomorphic Javascript" or "Universal Javacsript"\
+- Library by nature. React makes no assumptions about the rest of your tech stack\
+Modularity:\
+- is it a framework or a collection of libs? react/reactDOM\
+- can be taken into use bit by bit. Not "evil framework".\
+  can be refactored to or used just in the parts of the app where needed.\
+
+\b \
+Cons\
+
+\b0 - it's not an all-inclusive web framework. Solves the view/DOM problem and that's it.\
+  Some like that, and I do. Some want a complete solution to making a webapp. \
+- learning curve\
+    --how to work with React dataflow model, state\
+    --Small differences vs. HTML/DOM: className vs. class\
+    --Dynamic array of children components 
+\f1 \uc0\u8594 
+\f0  needs keys\
+- it's not good for everything\
+    + hyv\'e4 jos paljon dynaamisia asioita, data muuttuu jatkuvasti\
+    + hyv\'e4 jos tarvitaan paljon uudelleenk\'e4ytett\'e4vi\'e4 osia.\
+    - jos n\'e4it\'e4 ei ole --> Reactista ei ehk\'e4 hy\'f6ty\'e4\
+        A static website: ei paljoa toistuvia asioita -> Komponenteista ei hy\'f6ty\'e4\
+        Excellent for xxx where everything is dynamic\
+- Component behavior can not be tested with just the virtual DOM. Rendering can.\
+- Animation is an "interesting" fit into the diffing and optimized DOM update model.\
+\
+
+\b Ecosystem: Data,\
+
+\b0 - let's take a look at the ecosystem ... what people have built around React.\
+- handling the data in an application:\
+- flux / redux / reflux / fluxxor / fluxible / ...\
+- Relay - GraphQL queries\
+\
+
+\b Ecosystem:  react-router\
+
+\b0 - one of the most popular components\
+- you can have your browser show nice URLs when you navigate in a Single-Page App.\
+- Lazy loading code. Useful in a large application\
+\
+
+\b Ecosystem: UI components\
+
+\b0 - some different examples of useful components\
+- there are various table implementations, drag & drop stuff, file uploads\
+- in these slides, the code examples use react-highlight\
+- Draft.js - create your own rich text editor with just the features you need.\
+- React D3 - pretty charts. Very powerful.\
+\
+
+\b Ecosystem: component libraries\
+
+\b0 - of course there are also ibraries that contain full sets of components\
+\
+
+\b Ecosystem: React Native    experiences.ecosystemNative,\
+
+\b0 - The React dev experience for Android and iOS.\
+- "learn once, write anywhere" --> well, ummm... I don't know.\
+- It uses platform native components so you still have to learn those.\
+- "Native perf." -- or so they say...\
+- It's javascript so apps can be updated on the fly.\
+\
+
+\b Ecosystem: developer tools\
+
+\b0 - it is nice to go to Chrome Developer Tools and switch between the DOM-tree and the component-tree.\
+- OK. Semmoista Reactista. Jos nyt tuntuu ett\'e4 mihin t\'e4m\'e4 maailma on menossa\
+  kun joka vuosi on pinnalla uusi UI framework ... niin ... eih\'e4n t\'e4m\'e4 sin\'e4ns\'e4 mit\'e4\'e4n uutta ole -->\
+\
+
+\b So Hot X (slideshow of X-Windows toolkits from the 90's)\
+
+\b0 - Motif... v\'e4h\'e4n ty\'f6l\'e4st\'e4\
+- QT... t\'e4st\'e4 ainakin on joku kuullut\
+- FLTK... Fast Light ToolKit, my favorite\
+\
+
+\b X Windows UI frameworks\
+
+\b0 - these all were of course UI frameworks working on the X Windows system.\
+- components... components...\
+\
+
+\b More information\
+
+\b0 - some links to more info\
+- as far as youtube videos go, I would start with this one. \
+\
+
+\b Some final words\
+
+\b0 - React has taken web UI tech a step ahead by taking a different approach.\
+- Others are looking at these ideas and applying them in different ways.\
+- elm-html uses a virtual DOM\
+- Ember now has React-inspired improvements\
+\
+
+\b Thanks ... QUESTIONS?\
+
+\b0 \
+
+\b LET'S LOOK AT SOME CODE ...\
+
+\b0 \
+\
+}

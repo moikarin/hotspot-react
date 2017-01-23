@@ -1,0 +1,5 @@
+builds
+node_modules
+git-bash.lnk
+.gitbashrc
+.DS_Store
